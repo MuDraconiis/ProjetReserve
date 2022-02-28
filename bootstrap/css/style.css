@@ -1,0 +1,21 @@
+.foret_img{
+    max-width : 100%;
+    height: auto;
+    display: block;
+}
+
+.foret_conteneur{
+    margin: 10px;
+    
+}
+
+.visualisation_photo{
+    width: 150px;
+    height: 150px;
+    border-radius: 30px;
+}
+
+.check_point_img{
+    height:250px;
+    width: 250px;
+}
