@@ -1,8 +1,8 @@
 <?php 
 
-require_once 'header.php'; 
+require 'header.php'; 
 
-$id_foret= $_SESSION['id_foret'];
+$id_foret= strip_tags($_GET['id_foret']) ;
 
 
 //recuperation du fichier gpx pour afficher les delimitation de la foret
@@ -11,37 +11,35 @@ $requete->execute(array($id_foret));
 $reponse = $requete->fetch();
 
 //recuperation de tous les markers du parcours pour les afficher sur la carte
-
 $requete2=$bdd->prepare("SELECT * from check_point where id_foret=?");
 $requete2->execute(array($id_foret));
 
- ?>
+?>
 
 <script >    
 
 function initMap(){    
 
-//definition des options pour afficher la corse par defaut sur la carte
-var options ={ center: {lat: 42.039604, lng: 9.012893}, zoom:9,mapTypeId: "hybrid" }
+  //definition des options pour afficher la corse par defaut sur la carte
+  var options ={ center: {lat: 42.039604, lng: 9.012893}, zoom:9,mapTypeId: "hybrid" }
 
-//création de la carte
-map = new google.maps.Map(document.getElementById("map"),options) 
- var gmarkers = [];
+  //création de la carte
+  map = new google.maps.Map(document.getElementById("map"),options) 
+  var gmarkers = [];
 
- const tourStops = [];
- //affichages des markers sur la carte
-<?php while($marker = $requete2->fetch()){ ?>
+  const tourStops = [];
 
-    var lat=<?php echo $marker['lat_ck']; ?>;
-    var lng=<?php echo $marker['lng_ck']; ?>;
-    var desc="<?php echo $marker['desc_ck']; ?>";
-    
-    tourStops.push( [{ lat: lat, lng: lng }, desc ] );
-    
+  //affichages des markers sur la carte
+  <?php while($marker = $requete2->fetch()){ ?>
 
- <?php }; ?> 
+      var lat=<?php echo $marker['lat_ck']; ?>;
+      var lng=<?php echo $marker['lng_ck']; ?>;
+      var desc="<?php echo $marker['desc_ck']; ?>";
+      
+      tourStops.push( [{ lat: lat, lng: lng }, desc ] );
+      
 
- 
+  <?php }; ?> 
 
   // Create an info window to share between markers.
   const infoWindow = new google.maps.InfoWindow();
@@ -68,24 +66,25 @@ map = new google.maps.Map(document.getElementById("map"),options)
 //affichage des delimitation de la foret
 $.ajax({ type: "GET", url: "gpx_foret/<?php echo $reponse['delimitation_foret']; ?>", dataType: "xml",
     success: function (xml) { var points = []; var bounds = new google.maps.LatLngBounds();
-         $(xml).find("trkpt").each(function () {
-              var lat = $(this).attr("lat");
-              var lon = $(this).attr("lon");
-              var p = new google.maps.LatLng(lat, lon);
-              points.push(p);
-              bounds.extend(p);
-         });
+    $(xml).find("trkpt").each(function () {
+        var lat = $(this).attr("lat");
+        var lon = $(this).attr("lon");
+        var p = new google.maps.LatLng(lat, lon);
+        points.push(p);
+        bounds.extend(p);
+    });
 
-         var poly = new google.maps.Polyline({
-              // use your own style here
-              path: points,
-              strokeColor: "#3AF30B",
-              strokeOpacity: .7,
-              strokeWeight: 4
-         });
-         poly.setMap(map);
-         // fit bounds to track
-         map.fitBounds(bounds);
+    var poly = new google.maps.Polyline({
+        // use your own style here
+        path: points,
+        strokeColor: "#3AF30B",
+        strokeOpacity: .7,
+        strokeWeight: 4
+    });
+
+    poly.setMap(map);
+    // fit bounds to track
+    map.fitBounds(bounds);
     }
 });
 

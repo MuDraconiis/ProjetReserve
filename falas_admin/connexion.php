@@ -27,7 +27,7 @@
 
   <div class="d-flex flex-row-reverse bd-highlight loginEtLogout" style="margin-top: 20px;">
   
-  <div class="p-2 bd-highlight"><a class="btn btn-outline-primary" href="inscription.php" role="button">Inscription</a> </div>
+ 
 
 </div>
 
@@ -45,7 +45,7 @@
 
           <div class="form-group">
               <label class=" col-form-label" for="login_user" >Nom d'utilisateur *</label><br>
-              <input type="text" class="form-control" value="<?php echo @$_POST['mail_utilisateur']; ?>" placeholder="Entrez votre nom d'utilisateur" maxlength="50" name="login" required />
+              <input type="mail" class="form-control" value="<?php echo @$_POST['mail_utilisateur']; ?>" placeholder="Entrez votre nom d'utilisateur" maxlength="50" name="login" required />
           </div>
       
           <div class="form-group">
@@ -61,13 +61,13 @@
           <!--Début traitement -->
           <?php
           if(isset($_POST["valider"])){
-              $login=strip_tags( $_POST["login"]);
+              $login=strip_tags($_POST["login"]);
               $motdepasse=htmlspecialchars($_POST["motdepasse"]);
 
               if(strlen($login)>0 && strlen($motdepasse)>0){
 
                   $motdepasse=md5($motdepasse);
-                  $requete=$bdd->prepare("SELECT * FROM utilisateur WHERE mail_utilisateur=? AND mp_utilisateur=? ");
+                  $requete=$bdd->prepare("SELECT * FROM utilisateur WHERE email_utilisateur=? AND mot_de_passe_utilisateur=? and type_utilisateur ='Admin' ");
                   $requete->execute(array($login, $motdepasse));
                   $rows=$requete->fetch();
 
@@ -79,7 +79,8 @@
                       }else if($rows['statut_utilisateur'] == 1) {
                           //le compte est actif
                           
-                          $_SESSION['id_utilisateur']=$rows["id_utilisateur"];                     
+                          $_SESSION['id_utilisateur']=$rows["id_utilisateur"];     
+                          $_SESSION['type_utilisateur']=$rows["type_utilisateur"];                   
 
                           header('location:index.php');
 
@@ -97,7 +98,7 @@
                       }
 
                   }else{
-
+                      echo $motdepasse;
                       echo "<div class='alert alert-danger'><b>Erreur </b>:Identifiant ou mot de passe incorrect.</div>";
                   }
               }else{

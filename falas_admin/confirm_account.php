@@ -59,7 +59,7 @@
                 $code_confirmation_utilisateur=htmlspecialchars( $_POST['code_confirmation']);
                 
                 
-                $requete=$bdd->prepare("SELECT * from utilisateur where mail_utilisateur=? and code_confirmation_utilisateur =? ");
+                $requete=$bdd->prepare("SELECT * from utilisateur where email_utilisateur=? and code_confirmation_utilisateur =? ");
                 $requete->execute(array($mail_utilisateur, $code_confirmation_utilisateur));
                 $reponse=$requete->fetch();
 

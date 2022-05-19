@@ -161,10 +161,24 @@ require 'function.php';
 						
 						//Insertion de l'utilisateur
 
-						$requete=$bdd->prepare("INSERT INTO utilisateur(nom_utilisateur,prenom_utilisateur,tel_utilisateur,mail_utilisateur,code_confirmation_utilisateur,date_ajout_utilisateur,token_mot_de_passe_oublier,statut_utilisateur,date_expiration_code_confirmation,mp_utilisateur,type_utilisateur)VALUES(?,?,?,?,?,Now(),?,0,?,?,'Utilisateur') ");
+						$requete=$bdd->prepare("INSERT INTO utilisateur(nom_utilisateur, prenom_utilisateur, telephone_utilisateur, email_utilisateur, code_confirmation_utilisateur, date_ajout_utilisateur, token_mot_de_passe_oublier, statut_utilisateur, date_expiration_code_confirmation, mot_de_passe_utilisateur, type_utilisateur)VALUES(?,?,?,?,?,Now(),?,0,?,?,'Utilisateur') ");
 					
 
 						if( $requete->execute(array($nom,$prenom,$telephone,$email,$code_confirmation_utilisateur,$token_mot_de_passe_oublier,$date,$pass1)) ){
+							
+							//envoie de l'email de confirmation
+
+							$to=$email;
+							$subject  = 'Création de compte';
+							$headers = "From: torkent163@gmail.com";
+							$lien="www.tp_securite.com/confirm_account.php";
+							$message="Bonjour monsieur ".$nom." ".$prenom."\nVotre compte à bien eté créer.\nveuillez cliquer sur ce lien pour activer votre compte.\n".$lien."\nVotre identifiant est: ".$email."\nVotre code de confirmation est: ".$code_confirmation_utilisateur;
+
+							mail($to,$subject,$message, $headers);
+
+							//renitialisation de varible
+							
+
 							?>
 							<script > 
 							swal({
@@ -178,22 +192,7 @@ require 'function.php';
 							</script>
 
 							<?php
-							//envoie de l'email de confirmation
-
-							$to=$email;
-							$subject  = 'Création de compte';
-							$headers = "From: torkent163@gmail.com";
-							$lien="www.tp_securite.com/confirm_account.php";
-							$message="Bonjour monsieur ".$nom." ".$prenom."\nVotre compte à bien eté créer.\nveuillez cliquer sur ce lien pour activer votre compte.\n".$lien."\nVotre identifiant est: ".$email."\nVotre code de confirmation est: ".$code_confirmation_utilisateur;
-
-							mail($to,$subject,$message, $headers);
-
-							//renitialisation de varible
-							$email ="";
-							$nom ="";		
-							$telephone ="";
-							$login ="";
-									
+							
 						}else{
 
 							print_r($requete->errorInfo());
