@@ -1,15 +1,15 @@
 <?php
         session_start();
 
-        /*$db_host = "mysql-theroot163.alwaysdata.net";
+        $db_host = "mysql-theroot163.alwaysdata.net";
         $db_name = "theroot163_tpsecurite";
         $db_user = "241507";
-        $db_pass = "falasorma";*/
+        $db_pass = "falasorma";
 
-        $db_host = "localhost";
+        /*$db_host = "localhost";
         $db_name = "falas";
         $db_user = "root";
-        $db_pass = "";
+        $db_pass = "";*/
         try {
             //code...
             $bdd=$bdd = new PDO ("mysql:host=$db_host;dbname=$db_name","$db_user","$db_pass",array(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION));    

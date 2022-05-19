@@ -65,16 +65,11 @@ if (empty($_SESSION['id_utilisateur']) || @$_SESSION['type_utilisateur'] <> "Adm
   
     
     <li class="nav-item ">
-      <a href="" class="nav-link">Compte</a>
-    </li>    
+      <a href="compte.php" class="nav-link">Compte</a>
+    </li>   
+
     <li class="nav-item ">
-      <a href="" class="nav-link">Gestion des forets</a>
-    </li>
-    <li class="nav-item ">
-      <a href="" class="nav-link">Gestion des parcours</a>
-    </li>
-    <li class="nav-item ">
-      <a href="" class="nav-link">Gestion des utilisateurs</a>
+      <a href="users.php" class="nav-link">Gestion des utilisateurs</a>
     </li>
     
 

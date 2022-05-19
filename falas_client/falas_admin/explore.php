@@ -344,7 +344,7 @@ const flightPlanCoordinates = [];
                 while( $rep=$requete->fetch() ){                  
               ?>
               <div class="col col-md-6">
-                <img src="images/<?=$rep['nom_img']?>" class="col col-md-12" style="height:400px; border:solid 1px">
+                <img src="../images/<?=$rep['nom_img']?>" class="col col-md-12" style="height:400px; border:solid 1px">
                 <br/>
 
                 <div class="row ">
